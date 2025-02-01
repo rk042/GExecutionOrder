@@ -3,29 +3,23 @@
 #include "GExecutionOrder.h"
 
 void GExecutionOrder::_bind_methods() {
-
-	ClassDB::bind_method(D_METHOD("WaitForTime", "message"), &GExecutionOrder::WaitForTime);
-	ADD_SIGNAL(MethodInfo("my_signal"));
-
-	ClassDB::bind_method(D_METHOD("GetData"), &GExecutionOrder::GetData);
+	ClassDB::bind_method("CreateSignal", &GExecutionOrder::CreateSignal);
+	ClassDB::bind_method("EmitSignal", &GExecutionOrder::EmitSignal);
+	ClassDB::bind_method("GetCurrentTag", &GExecutionOrder::GetCurrentTag);
 }
 
 GExecutionOrder::GExecutionOrder() {
-
+	current_tag.instantiate();
 }
 
-void GExecutionOrder::WaitForTime(String message) {
-
-	Object::connect("my_signal",callable_mp(this,&GExecutionOrder::EmitTimeEnd));
-	Object::emit_signal("my_signal");
+void GExecutionOrder::CreateSignal() {
+	current_tag.ptr()->Wait();
 }
 
-void GExecutionOrder::EmitTimeEnd() {
-	data+=100;
+void GExecutionOrder::EmitSignal() {
+	current_tag.ptr()->Emit();
 }
 
-int GExecutionOrder::GetData() const {
-	return data;
+Ref<GExecutionTag> GExecutionOrder::GetCurrentTag() {
+	return current_tag;
 }
-
-
