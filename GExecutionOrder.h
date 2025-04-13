@@ -8,7 +8,7 @@
 
 #include "GExecutionTag.h"
 
-class GExecutionOrder : public RefCounted {
+static class GExecutionOrder : public RefCounted {
 	GDCLASS(GExecutionOrder, RefCounted);
 
 private:
